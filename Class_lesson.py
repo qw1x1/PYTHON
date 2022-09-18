@@ -242,3 +242,5 @@ print(df_sin(math.pi/4)) # просто функция
 #print(df_sin(math.pi/3))
 
 #hi am LINUX
+
+#hi am WINDOWS
