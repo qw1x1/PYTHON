@@ -240,3 +240,9 @@ print(df_sin(math.pi/4)) # просто функция
 
 #df_sin = Derivate(df_sin) # Декорированая функция через объект класса Derivate/ Функция это объект класса
 #print(df_sin(math.pi/3))
+'''
+asjdhgasjd
+ asdasdasdwer
+  asdasdasdasdwer
+   asdasdewrwerewrwer
+'''
