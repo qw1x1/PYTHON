@@ -1,4 +1,3 @@
-'''
 class Point:
     min_coord = 1
     max_coord = 1000
@@ -53,7 +52,7 @@ class Point:
         else:
             object.__setattr__(self, name, value)
 
-pt1 = Point(1, 2, 3, 4)
+#pt1 = Point(1, 2, 3, 4)
 #print(pt1.get_coard())
 #pt1.set_coard(4,3)
 #print(pt1.get_coard())
@@ -79,7 +78,7 @@ pt1 = Point(1, 2, 3, 4)
  
 
 
-''' # С 1 по 100 строку закоментил
+
 
 
 class Person:
@@ -258,7 +257,7 @@ class Test:
 
 #print(Test('NAME'))
 
-class Point:
+class Point1:
     def __init__(self, *args):
         self.__coords = args
 
@@ -270,6 +269,6 @@ class Point:
     def __abs__(self):
         return list(map(abs, self.__coords))
 
-p = Point(1, -2, -5)
-print(len(p))
-print(abs(p))
+#p = Point1(1, -2, -5)
+#print(len(p))5
+#print(abs(p))
