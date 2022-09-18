@@ -215,6 +215,9 @@ class Point3D:
 #del p.x
 #print(p.__dict__)
 
+#########################################################################################################################
+#__DUNDER-METOD__
+#########################################################################################################################
 '''
 Метод __call__ - позволяет вызвать объект класса как функцию
 передавая все аргументы через ссылку на объект self.
@@ -236,11 +239,37 @@ class Derivate:
 def df_sin(x):
     return math.sin(x)
 
-print(df_sin(math.pi/4)) # просто функция 
+#print(df_sin(math.pi/4)) # просто функция 
 
 #df_sin = Derivate(df_sin) # Декорированая функция через объект класса Derivate/ Функция это объект класса
 #print(df_sin(math.pi/3))
 
-#hi am LINUX
+class Test:
+    def __init__(self, name):
+        self.name = name
+    
+    #Метод переопределяющий вывод инфы, ТОЛЬКО ДЛЯ ОТЛАДКИ!!!
+    def __repr__(self):
+        return f'{self.__class__} : {self.name}'
 
-#hi am WINDOWS
+    #Метод переопределяющий вывод инфы, ДЛЯ ПОЛЬЗОВАТЕЛЯ!!!
+    def __str__(self):
+        return f'{self.name}'
+
+#print(Test('NAME'))
+
+class Point:
+    def __init__(self, *args):
+        self.__coords = args
+
+    #к объекту класса мы не можем присенить функцию len(), для этого определяем метод __len__
+    def __len__(self):
+        return len(self.__coords)
+
+    #к объекту класса мы не можем присенить функцию abs(), для этого определяем метод __len__
+    def __abs__(self):
+        return list(map(abs, self.__coords))
+
+p = Point(1, -2, -5)
+print(len(p))
+print(abs(p))
