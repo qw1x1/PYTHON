@@ -272,3 +272,114 @@ class Point1:
 #p = Point1(1, -2, -5)
 #print(len(p))5
 #print(abs(p))
+
+#14 Магические методы __add__, __sub__, __mul__, __truediv__ 
+
+class Clock:
+    __DAY = 86400
+
+    def __init__(self, seconds: int):
+        if not isinstance(seconds, int):
+            raise TypeError('Секунды должны быть int')
+        self.seconds = seconds % self.__DAY
+
+    @classmethod
+    def varify(cls, x):
+        if not isinstance(x, (int, Clock)):
+            raise TypeError('Секунды должны быть int or Clock')
+        sc = x
+        if isinstance(sc, Clock):
+            sc = x.seconds
+        return sc
+    
+    def get_time(self):
+        s = self.seconds % 60
+        m = (self.seconds // 60) % 60
+        h = (self.seconds // 3600) % 24
+        return f"{self.__get_formatted(h)}:{self.__get_formatted(m)}:{self.__get_formatted(s)}"
+
+    @classmethod
+    def __get_formatted(cls, x):
+        return str(x).rjust(2, '0')
+    #======================================ADD==================================================#
+    def __add__(self, other):
+        return self.__class__((self.seconds + self.varify(other)))
+
+    def __radd__(self, other):
+        return self + other
+
+    def __iadd__(self, other):
+        self.seconds += self.varify(other)
+        return self
+    #=======================================SUB==================================================#
+    def __sub__(self, other):
+        return self.__class__((self.seconds - self.varify(other)))
+
+    def __rsub__(self, other):
+        return self - other
+
+    def __isub__(self, other):
+        self.seconds -= self.varify(other)
+        return self
+
+
+#c1 = Clock(2000)
+#c2 = Clock(1000)
+#c1 = c1 + 110
+#c1 -= 110
+
+
+#print(c1.get_time())
+#print(c1.get_time())
+#print(c4.get_time())
+
+#15. Методы сравнений __eq__, __ne__, __lt__, __gt__ 
+
+class Clock2:
+    __DAY = 86400
+
+    def __init__(self, seconds: int):
+        if not isinstance(seconds, int):
+            raise TypeError('Секунды должны быть int')
+        self.seconds = seconds % self.__DAY
+
+    @classmethod
+    def varify(cls, x):
+        if not isinstance(x, (int, Clock2)):
+            raise TypeError('Секунды должны быть int or Clock2')
+        sc = x
+        if isinstance(sc, Clock):
+            sc = x.seconds
+        return sc
+    
+    def get_time(self):
+        s = self.seconds % 60
+        m = (self.seconds // 60) % 60
+        h = (self.seconds // 3600) % 24
+        return f"{self.__get_formatted(h)}:{self.__get_formatted(m)}:{self.__get_formatted(s)}"
+    
+    @classmethod
+    def __get_formatted(cls, x):
+        return str(x).rjust(2, '0')
+
+    #======================================eq=ne=lt=gt===========================================#
+    # == and !=
+    def __eq__(self, other):
+        if self.seconds == self.varify(other):
+            return True
+        return False
+    # < and >
+    def __lt__(self, other):
+        if self.seconds > self.varify(other):
+            return True
+        return False
+
+    # < and >
+    def __le__(self, other):
+        if self.seconds >= self.varify(other):
+            return True
+        return False
+
+#c1 = Clock2(1000)
+#c2 = Clock2(1000)
+#print(c1 <= c2)
