@@ -494,3 +494,4 @@ class FRange2:
         self.fr = FRange(start, stop, step)
 
     
+# ok
