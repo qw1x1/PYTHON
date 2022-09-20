@@ -70,9 +70,9 @@ class Point:
 """
 Имена методов для сет и гет должны быть одинаковы
 первым пищем гет и оборачиваем в @property
-затем писем геи с таимже именем как и у гет
-и оборачиваем в @old.setter
-где old = имя геттера, а .setter = мия декоратора в @property
+затем писем геt с таимже именем как и у гет
+и оборачиваем в @name.setter
+где name = имя геттера, а .setter = мия декоратора в @property
 """
 #per1 = Person("Dimka", 22)
  
@@ -155,7 +155,7 @@ class Person:
     
 
 
-#p = Person('Бычковский Владислав Александрович', 22, '1234 564489', 65.40)
+#p = Person('Бычковский Владислав Александрович', 22, '1234 564489', 75.40)
 
 #print(p.__dict__)
 
@@ -273,7 +273,7 @@ class Point1:
 #print(len(p))5
 #print(abs(p))
 
-#14 Магические методы __add__, __sub__, __mul__, __truediv__ 
+#14 Магические методы __add__, __sub__, __mul__, __truediv__ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class Clock:
     __DAY = 86400
@@ -322,18 +322,24 @@ class Clock:
         self.seconds -= self.varify(other)
         return self
 
+    def __eq__(self, other):
+        return self.seconds == other.seconds
 
-#c1 = Clock(2000)
-#c2 = Clock(1000)
+    def __hash__(self):
+        return hash(self.seconds)
+
+
+# c1 = Clock(2000)
+# c2 = Clock(2000)
 #c1 = c1 + 110
 #c1 -= 110
-
+# print(hash(c1), hash(c2), sep='\n')
 
 #print(c1.get_time())
 #print(c1.get_time())
 #print(c4.get_time())
 
-#15. Методы сравнений __eq__, __ne__, __lt__, __gt__ 
+#15. Методы сравнений __eq__, __ne__, __lt__, __gt__ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 class Clock2:
     __DAY = 86400
@@ -368,18 +374,123 @@ class Clock2:
         if self.seconds == self.varify(other):
             return True
         return False
-    # < and >
-    def __lt__(self, other):
-        if self.seconds > self.varify(other):
-            return True
-        return False
+        # < and >
+        def __lt__(self, other):
+            if self.seconds > self.varify(other):
+                return True
+            return False
 
-    # < and >
-    def __le__(self, other):
-        if self.seconds >= self.varify(other):
-            return True
-        return False
+        # < and >
+        def __le__(self, other):
+            if self.seconds >= self.varify(other):
+                return True
+            return False
 
-#c1 = Clock2(1000)
-#c2 = Clock2(1000)
-#print(c1 <= c2)
+
+# c1 = Clock2(1000)
+# c2 = Clock2(1000)
+# print(c1 <= c2)
+
+
+#16. Магические методы __eq__ и __hash__ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class Point2:
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+# Для того чтобы у двух объектов с одинаковыми значениями атрибутов был одинаковый хеш 
+# Переопределяем метод магичкский метод __hash__, без его переопределения хеши двух обьектов 
+# С одинаковыми значениями будут разными
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __hash__(self):
+        return hash((self.x, self.y))
+
+# Если создать словарь после преопределения методов то если в качестве ключей взять объект класса с одинаковыми
+#p1 = Point2(1, 2); p2 = Point2(1, 2) # Хеши будут равны если методы __eq__ и __hash__ переопределены
+# d = {}
+# d[p1] = 1
+# d[p2] = 2
+# Output = {<__main__.Point2 object at 0x7f2184ab9f90>: 2}
+# Мы просто перезапишим значения т.к ключ будет только один
+
+# Но если не переопределять методы __eq__ и __hash__, то мы создадим две записи в словаре 
+# d = {}
+# d[p1] = 1
+# d[p2] = 2
+# print(d)
+# Output = {<__main__.Point2 object at 0x7f411a999f60>: 1, <__main__.Point2 object at 0x7f411a999fc0>: 2}
+
+
+#17. Магический метод __bool__ определения правдивости объектов +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+class Point3:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def __bool__(self):
+        return self.x == self.y
+
+# p1 = Point3(10, 1)
+
+# if p1:
+#     print('Объект p1 возвращает True')
+# else:
+#     print('Объект p1 возвращает False')
+
+#18. Магические методы __getitem__, __setitem__ и __delitem__ +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class Student:
+    def __init__(self, name: str, marks: list):
+        self.name = name
+        self.marks = list(marks)
+
+    def varify(self, item):
+        if 0 <= item <= len(self.marks):
+            return item
+        else:
+            raise IndexError('Не вeрный индекс')
+
+    def __getitem__(self, item):
+            return self.marks[self.varify(item)]
+        
+    def __setitem__(self, item, value):
+        if item >= len(self.marks):
+            off = (item + 1) - len(self.marks)
+            self.marks.extend([0]*off)
+        self.marks[self.varify(item)] = value
+
+    def __delitem__(self, item):
+        del self.marks[self.varify(item)]
+
+
+# s1 = Student('Sergy', [8, 4, 6, 2, 7])
+# s1[2] == s1.marks[2]
+# s1[15] = 20
+# print(*s1)
+# del s1[3]
+# print(*s1)
+
+
+#19. Магические методы __iter__ и __next__++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Создание итерируемых обьектов+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+class FRange:
+    def __init__(self, start = 0, stop = 0, step = 1):
+        self.start = start
+        self.stop = stop
+        self.step = step
+
+
+class FRange2:
+    def __init__(self, start = 0, stop = 0, step = 1, rows = 5):
+        self.rows = rows
+        self.fr = FRange(start, stop, step)
+
+    
