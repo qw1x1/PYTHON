@@ -559,12 +559,12 @@ class Rect(Geom):
     def drow(self):
         print('Drow rect', self.x1, self.x2, self.y1, self.y2)
 
-l = Line(1, 2, 3, 4)
-r = Rect(2, 1, 4, 5)
+# l = Line(1, 2, 3, 4)
+# r = Rect(2, 1, 4, 5)
 
-l.drow()
-r.drow()
+# l.drow()
+# r.drow()
 
-l.Perim()
-r.Perim()
-print(r.name)
+# l.Perim()
+# r.Perim()
+# print(r.name)
