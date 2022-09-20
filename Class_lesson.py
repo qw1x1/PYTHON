@@ -486,6 +486,19 @@ class FRange:
         self.start = start
         self.stop = stop
         self.step = step
+        
+
+    def __next__(self):
+        if self.value + self.step < self.stop:
+            self.value += self.step
+            return self.value
+        else:
+            raise StopIteration
+
+    # Итератор
+    def __iter__(self):
+        self.value = self.start - self.step
+        return self
 
 
 class FRange2:
@@ -493,5 +506,27 @@ class FRange2:
         self.rows = rows
         self.fr = FRange(start, stop, step)
 
+    def __next__(self):
+        if self.value < self.rows:
+            self.value += 1
+            return iter(self.fr)
+        else:
+            raise StopIteration
+
+    # Итератор
+    def __iter__(self):
+        self.value = 0
+        return self
+
     
-# ok
+# f = FRange(0, 5)
+
+# ff = list(map(float, f))
+# print(ff)
+
+# fr = FRange2(0 , 5, 1, 5)
+
+# for row in fr:
+#     for i in row:
+#         print(i, end=' ')
+#     print()
