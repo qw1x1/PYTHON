@@ -568,3 +568,46 @@ class Rect(Geom):
 # l.Perim()
 # r.Perim()
 # print(r.name)
+
+# Объект класса Line наследуется от класса Geom
+# print(isinstance(l, Geom)) -> True
+# Класс Line наследуется от класса Geom
+# print(issubclass(Line, Geom)) -> True
+
+
+#22. Наследование. Функция super() и делегирование ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+class Geom2:
+    name = 'Geom2'
+
+    def __init__(self, x1, x2, y1, y2):
+        print(f'call {self.__class__}')
+        self.x1 = x1
+        self.x2 = x2
+        self.y1 = y1
+        self.y2 = y2
+    
+
+class Line2(Geom2):
+
+    def drow(self):
+        print('Drow line')
+
+class Rect2(Geom2):
+
+    def __init__(self, x1, x2, y1, y2, fill = None):
+        # Делегированный вызов (дополнение функционала базового класса)
+        # через super() вызываем __init__ базового класса, и передаем агрументы, затем дополняем 
+        # super() - возвращает обект базового класса
+        super().__init__(x1, x2, y1, y2) 
+        self.fill = fill
+
+    def drow(self):
+        print('Drow rect', self.x1, self.x2, self.y1, self.y2)
+
+# l = Line2(1, 2, 3, 4)
+# r = Rect2(2, 1, 4, 5)
+
+# print(r.__dict__) ->{'x1': 2, 'x2': 1, 'y1': 4, 'y2': 5, 'fill': None}
+# print(l.__dict__) ->{'x1': 1, 'x2': 2, 'y1': 3, 'y2': 4}
