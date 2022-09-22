@@ -643,3 +643,89 @@ class Rect3(Geom3):
 # r = Rect3(2, 1, 4, 5, 'red')
 # print(r.__dict__) -> {'_Geom3__x1': 2, '_x2': 1, '_y1': 4, 'y2': 5, 'fill': 'red'}
 # _Geom3__x1': 2 - защищённый атрибут базового класса, нет доступа из дочепнего класса
+
+
+#24. Полиморфизм и абстрактные методы++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#Единый интерфейс для разных объектов
+
+# Создадим базовый класс для того чтобы у каждого дочепнего класса был метод get_pr
+# Методы которые обязательно должны быть переопределены и не имеют собственной реализации называются абстрактные 
+# такие как абстрактные
+ 
+
+class Geom4:
+    def get_pr(self):
+        raise NotImplementedError('В дочернем классе должен быть преопределённый метод get_pr')
+
+class Rectangle(Geom4):
+    def __init__(self, w, h):
+        self.w = w
+        self.h = h
+
+    def get_pr(self):
+        return 2*(self.h + self.w)
+
+    
+class Square(Geom4):
+    def __init__(self, a):
+        self.a = a
+    
+    def get_pr(self):
+        return 4 * self.a
+
+class Triangle(Geom4):
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+    
+    def get_pr(self):
+        return self.a + self.b + self.c
+
+
+# ob_list = [Rectangle(1, 2), Rectangle(10, 20), Square(1), Square(2), Triangle(1, 2, 3), Triangle(10, 20, 30)]
+
+# У всех классов есть метод с одинаковым именем, вот и весь секрет
+
+# [print(ob.get_pr()) for ob in ob_list]
+
+
+#25. Множественное наследование++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Лучше избешать множественного наследования, а лучше знать но не юзать
+
+class Goods():
+    def __init__(self, name, weight, price):
+        super().__init__() #Для вызова метода __init__ из второго по иерархии базового класса
+        self.name = name
+        self.weight = weight
+        self.price = price
+
+    def print_info(self):
+        print(f"{self.name}, {self.weight}, {self.price}")
+
+class WixinLog:
+    ID = 0
+    # Принято во втором и далее базовых классах по иерархии наследования 
+    # определять пустой инициализатор
+    def __init__(self):
+        WixinLog.ID += 1
+        self.id = WixinLog.ID
+
+    def save_sell_log(self):
+        print(f'{self.id} : товар был продан')
+    
+
+class NoteBook(Goods, WixinLog):
+    # В начале по иерархии идет класс Goods, если метода нет в наследнике но есть в первом базовом классе то мы 
+    # этот метод возьмём из первого базового класса, а если этого метода нету и в первом базовом клссе,
+    # мы данный метод будем искать в следующем по иерархии наследования, т.е в классе WixinLog
+    pass
+
+# n = NoteBook('DEAL', 0.890, 1000) 
+# n.print_info()#-> DEAL, 0.89, 1000
+# n.save_sell_log()# -> 1 : товар был продан
+# n = NoteBook('Aser', 1.4, 900)
+# n.print_info()#-> 'Aser', 1.4, 900 
+# n.save_sell_log()# -> 2 : товар был продан
+# # Иерархия наследования -> print(NoteBook.__mro__)
+# print(NoteBook.__mro__)#-> (<class '__main__.NoteBook'>, <class '__main__.Goods'>, <class '__main__.WixinLog'>, <class 'object'>)
