@@ -1,3 +1,4 @@
+import timeit
 class Point:
     min_coord = 1
     max_coord = 1000
@@ -729,3 +730,55 @@ class NoteBook(Goods, WixinLog):
 # n.save_sell_log()# -> 2 : товар был продан
 # # Иерархия наследования -> print(NoteBook.__mro__)
 # print(NoteBook.__mro__)#-> (<class '__main__.NoteBook'>, <class '__main__.Goods'>, <class '__main__.WixinLog'>, <class 'object'>)
+
+
+#26. Коллекция __slots__+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# Ограничение создаваемых локальных св-тв ++++++++++++++++
+# Уменьшение занимаемой памяти +++++++++++++++++++++++++++
+# Ускорение работы с локальными св-тв ++++++++++++++++++++
+
+class Point4:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    #test time metod
+    def calc(self):
+        self.x += 1
+        del self.y
+        self.y = 0
+
+class Point4D:
+    # Колекция __slots__ ограничевает количество и имя аргументов, при ее объявлении не создаётся колекция __dict__
+    __slots__ = ('x', 'y')
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    #test time metod
+    def calc(self):
+        self.x += 1
+        del self.y
+        self.y = 0
+
+# p1 = Point4(10, 20)
+# p2 = Point4D(10, 20)
+# t1 = timeit.timeit(p1.calc)# -> 1.4474129036000304
+# t2 = timeit.timeit(p2.calc)# -> 1.2391529519995856
+# print(t1, t2, sep='\n')
+
+
+
+# 27. Как работает __slots__ с property и при наследовании ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+class Point5D:
+    # Колекция __slots__ ограничевает количество и имя аргументов, при ее объявлении не создаётся колекция __dict__
+    __slots__ = ('x', 'y')
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
