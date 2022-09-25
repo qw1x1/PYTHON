@@ -925,3 +925,40 @@ class PrintData:
 #     print('Принтер не отвечает')
 # except ExceptionPrint:
 #     print('Общая ошибка печати')
+
+
+
+#32. Менеджеры контекстов. Оператор with+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+class DefendVector:
+    def __init__(self, vector):
+        self.__vector = vector
+
+    # Работаем с копией а не с самим обектом
+    def __enter__(self):
+        self.__temp = self.__vector[:]
+        return self.__temp
+
+    # Если возникнет исключение мы не будем сохранять результат 
+    # Но если при работе не возникнит исключений мы схраним результат из копии в иригинал и тем самым изменим его 
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is None:
+            self.__vector[:] = self.__temp
+
+        return False
+
+lst1 = [1, 2, 3]
+lst2 = [1, 2]
+
+try:
+    with DefendVector(lst1) as l:
+        # Т.к у данных спискх разная длинна то возникнет IndexError
+        # Но если при работе не возникнит исключений мы схраним результат из копии в иригинал и тем самым изменим его 
+        for i, value in enumerate(l):
+            l[i] += lst2[i]
+except:
+    print('Error')
+finally:
+    print(*lst1)
