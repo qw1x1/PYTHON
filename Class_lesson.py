@@ -884,10 +884,44 @@ def func11():
 # func11()
 
 
+
 #31. Инструкция raise и пользовательские исключения++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-def test1():
+
+# Пользовательский класс для определения собстенного исключения. Наследовать от Exception
+class ExceptionPrint(Exception):
+    '''Общий класс для исключений при печети, специализируется на всех ошибках при работе с принтером'''
     pass
 
-test1()
+class ExceptionPrintSendData(ExceptionPrint):
+    '''Класс исключение при отправке данных в принтер, специализируется на отпревек данных в принтер'''
+    def __init__(self, *args):
+        self.message = args[0] if args else None
+
+    def __str__(self):
+        return f'Ошибка: {self.message}'
+
+class PrintData:
+
+    def print_data(self, data):
+        self.send_data(data)
+        print(f'печать: {str(data)}')
+
+    def send_data(self, data):
+        if not self.send_to_print(data):
+            raise ExceptionPrintSendData('Принтер не отвечает')
+
+    def send_to_print(self, data):
+        return False
+        # return True
+
+# p = PrintData()
+# p.print_data('data')
+
+# try:
+#     p.print_data('data')
+# except ExceptionPrintSendData:
+#     print('Принтер не отвечает')
+# except ExceptionPrint:
+#     print('Общая ошибка печати')
