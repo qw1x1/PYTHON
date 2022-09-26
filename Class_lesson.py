@@ -962,3 +962,36 @@ except:
     print('Error')
 finally:
     print(*lst1)
+
+
+
+
+#33. Вложенные классы +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+class Women:
+    title = 'Атрибут класса Women, поле title'
+    discription = 'Атрибут класса Women, поле discription'
+    ordering = 'Атрибут класса Women, поле ordering'
+
+    def __init__(self, name, psw):
+        self._name = name
+        self._psw = psw
+        # Мы можем использовать атрибуты вложенного класса 
+        # При инициализации self.meta, автомотически создасться объект Meta.
+        # Т,е при создании объекта Women автоматически создасться объект Meta
+        self.meta = self.Meta(name + '@' + psw)
+    
+
+# Логику нужно продумывать так, чтобы вложенный класс не зависил от отрибутов внешнего класса(не имели в ним доступа)
+    class Meta:
+        ordering = ['id']
+        # Внутренний класс не должен использовать атрибуты внешнего класса
+        def __init__(self, access):
+            self.access = access
+    
+
+# w = Women('root', '1234')
+# print(w.__dict__) # -> {'_name': 'root', '_psw': '1234', 'meta': <__main__.Women.Meta object at 0x7f6df5f04e50>}
+# print(w.meta.__dict__) # -> {'access': 'root@1234'}
