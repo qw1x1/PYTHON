@@ -948,22 +948,22 @@ class DefendVector:
             self.__vector[:] = self.__temp
 
         return False
+def tt():
+    lst1 = [1, 2, 3]
+    lst2 = [1, 2]
 
-lst1 = [1, 2, 3]
-lst2 = [1, 2]
+    try:
+        with DefendVector(lst1) as l:
+            # Т.к у данных спискх разная длинна то возникнет IndexError
+            # Но если при работе не возникнит исключений мы схраним результат из копии в иригинал и тем самым изменим его 
+            for i, value in enumerate(l):
+                l[i] += lst2[i]
+    except:
+        print('Error')
+    finally:
+        print(*lst1)
 
-try:
-    with DefendVector(lst1) as l:
-        # Т.к у данных спискх разная длинна то возникнет IndexError
-        # Но если при работе не возникнит исключений мы схраним результат из копии в иригинал и тем самым изменим его 
-        for i, value in enumerate(l):
-            l[i] += lst2[i]
-except:
-    print('Error')
-finally:
-    print(*lst1)
-
-
+# print(tt())
 
 
 #33. Вложенные классы +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1007,4 +1007,68 @@ class Women:
 
 
 
+#35. Пользовательские метаклассы. Параметр metaclass +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+
+class Met(type):
+    def __new__(cls, name, base, attrs):
+        # Добавим два атрибута класса
+        attrs.update({'max_coord': 100, 'min_coord': 0})
+        # Передадим параметры метаклассу
+        return type.__new__(cls, name, base, attrs)
+
+
+class Port(metaclass=Met):
+    def get_coard(self):
+        return (0, 0)
+
+
+# p = Port()xнициализатора
+
+
+
+
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#36. Метаклассы в API ORM Django +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+class Meta(type):
+    # Инициализатор создаваемого класса 
+    def create_local_atters(self, *args, **kwargs):
+        for key, value in self.class_atters.items():
+            # Создаем локальные свойства класса (Weman)
+            self.__dict__[key] = value
+
+    # cls - ссылка на создаваемый класс (Weman)
+    def __init__(cls, name, base, attrs):
+        cls.class_atters = attrs
+        # Инициализируем инициализатор создаваемого класса 
+        cls.__init__ = Meta.create_local_atters
+
+
+class Weman(metaclass=Meta):
+    title = 'Заголовок'
+    content = 'Контент'
+    photo = 'Ссылка на фото'
+
+
+# Данный класс Weman, берёт некий функционал из метакласса 
+# Это экриваленнтно:
+# class Weman:
+#     class_atters = {'title': 'Заголовок', 'content': 'Контент', 'photo': 'Ссылка на фото'}
+#     title = 'Заголовок'
+#     content = 'Контент'
+#     photo = 'Ссылка на фото'
+
+#     def __init__(self, *args, **kwargs):
+#         for key, value in self.class_atters.items():
+#             # Создаем локальные свойства класса (Weman)
+#             self.__dict__[key] = value
+
+
+# w = Weman()
+# print(w.__dict__)
