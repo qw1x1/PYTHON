@@ -1,24 +1,43 @@
 import re
+# . - любой символ кароме \n
+#\d - любая цифра
+#\D - любая не цифра
+#\s - любой пробельный символ
+#\S - любой не пробельный символ
+#\w - любой символ слова
+#\W - любой символ не слова
 
-class Test1:
-    
-    # def method_re_decorator(func):
-    #     def wrapper(self, *args, **kwargs):
-    #         text, word = args
-    #         words = f'//b{word}//b'
-    #         result = func(text, words)
-    #         print(text, words)
-    #         return result
-    #     return wrapper
 
-    # @method_re_decorator
-    def serch_word(self, text: str, word: str):
-        return re.findall(word, text)
+# with open('text.txt', 'r') as file:
+    # test_info = []
+    # for line in file:
+    #     test_info.append(line.strip())
 
-with open('text.txt', 'r') as file:
-    test_info = []
-    for line in file:
-        test_info.append(line.strip())
+# Регулярные выражения #1: литералы и символьный класс+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-t = Test1()
-print(t.serch_word(test_info[1], 'не'))
+test_info = 'еда, (еда), победа, беда'
+# r'\(еда\)' - найдёт вхождение (еда)
+# r'еда' - найдёт четыре вхождения ['еда', 'еда', 'еда', 'еда']
+result = re.findall(r'\bеда\b', test_info)
+
+# r'[Ее]д[ау]' - задаёт набор символов 'Е' или 'е', а в конце слова 'а' или 'у'
+# r'[а-иА-И]д[а-уА-У]' - задаёт диапозон символов в алфавитном порядке
+# r'[^а-яА-Я]' - будем искать не буквы русс.алфовита
+test_info = 'еда, еду, Еда, Еду'
+result = re.findall(r'[Ее]д[ау]', test_info)
+
+
+# Регулярные выражения #2: квантификаторы {m,n}, +, * , ?+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# r'o{2,5}' - означает что данная комбинация может повторяться от 2 до 5 раз
+test_info = 'Google, Gooogle, Goooooogle'
+result = re.findall(r'o{2,5}', test_info)
+
+
+
+
+
+
+
+
+
+print(result)
