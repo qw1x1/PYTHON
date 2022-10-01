@@ -76,8 +76,31 @@ with open('text.xml', 'r') as file:
             dic = result.groupdict()
             lon.append(dic['lon'])
             lat.append(dic['lat'])
-print(lat, lon, sep='\n')
+# print(lat, lon, sep='\n')
 
 
+
+# Регулярные выражения #4: флаги и проверки++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+test_info = """<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Уроки по Python</title>
+</head>
+<body>
+<script type="text/javascript">
+let o = document.getElementById('id_div');
+console.log(obj);
+</script>
+</body>
+</html>"""
+result = re.findall(r"([-\w]+)[ \t]*=[ \t]*[\"'](.+?)(?<![ \t])[\"']", test_info, re.MULTILINE)
+
+
+
+    
 
 print(result)
